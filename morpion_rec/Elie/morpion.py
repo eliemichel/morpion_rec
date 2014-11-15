@@ -1,6 +1,7 @@
 import phyks
 import elie
 from itertools import product
+from random import randint
 from utils import *
 
 
@@ -17,26 +18,24 @@ class Morpion:
         @return (x1, y1, x2, y2)"""
         print_grid(self.grid)
         subgrid = self.grid[self.last_x][self.last_y]
-        new_x = 0
-        new_y = 0
-        def mark_pos(p):
+        def test_pos(p):
             x,y = p
-            if subgrid[x][y] != 0:
-                return False
-            new_x = x
-            new_y = y
-            return True
+            return subgrid[x][y] == 0
 
         my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
         his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
-        phyks.play_next_subgrid(subgrid, my, his, mark_pos)
+        pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
+        while not pos:
+            subgrid = self.grid[randint(0, 2)][randint(0, 2)]
+            pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
+
+        new_x, new_y = t
         cell = self.last_x, self.last_y, new_x, new_y
 
         debug("elie.check_next_win(self.grid, cell): " + str(elie.check_next_win(self.grid, cell)))
 
         return cell
-
 
 
     def tic(self, cell):
@@ -70,6 +69,25 @@ class Morpion:
 
     def cheater(self):
         print("Fair enough")
+
+
+class Morpion2(Morpion):
+    def available_positions(self):
+        subgrid = self.grid[self.last_x][self.last_y]
+        return [(self.last_x, self.last_y, x, y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 0]
+
+    def play(self, time):
+        if time < 0:
+            return None
+        max_cost = -1
+        for p in self.available_positions():
+            m = self.copy()
+            if elie.check_next_win(m.grid, p):
+                m.tic(p)
+                if m.play(time - 1) is not None:
+                    if m.cost() > max_cost:
+                        best = p
+        return p
 
 
 
