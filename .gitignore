@@ -1,0 +1,15 @@
+*.swp
+*~
+
+*/_build/*
+*/*/_build/*
+*.native
+*.byte
+
+*.log
+
+*.o
+
+morpion_rec/*/player
+
+dummy_test
