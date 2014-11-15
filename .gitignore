@@ -5,6 +5,7 @@
 */*/_build/*
 *.native
 *.byte
+*.pyc
 
 *.log
 

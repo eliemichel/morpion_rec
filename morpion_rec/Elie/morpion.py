@@ -27,10 +27,17 @@ class Morpion:
 
         pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
         while not pos:
-            subgrid = self.grid[randint(0, 2)][randint(0, 2)]
+            for (x,y) in product(range(3), range(3)):
+                self.last_x, self.last_y = x, y
+                subgrid = self.grid[x][y]
+                pos2 = try_win(subgrid)
+                if pos2 is not None:
+                    return self.last_x, self.last_y, pos2[0], pos2[1]
+            self.last_x, self.last_y = randint(0, 2), randint(0, 2)
+            subgrid = self.grid[self.last_x][self.last_y]
             pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
 
-        new_x, new_y = t
+        new_x, new_y = pos
         cell = self.last_x, self.last_y, new_x, new_y
         debug("get_by_tuple:"+str(get_by_tuple(self.grid, cell)))
         debug("cell:"+str(cell))
@@ -82,15 +89,17 @@ class Morpion2(Morpion):
     def play(self, time):
         if time < 0:
             return None
-        max_cost = -1
+        max_cost = None
         for p in self.available_positions():
             m = self.copy()
             if elie.check_next_win(m.grid, p):
                 m.tic(p)
                 if m.play(time - 1) is not None:
-                    if m.cost() > max_cost:
+                    cost = m.cost()
+                    if max_cost is None or cost > max_cost:
                         best = p
-        return p
+                        max_cost = cost
+        return best
 
 
 
