@@ -12,7 +12,7 @@ def test_pos(subgrid, pos):
     return subgrid[x][y] == 0
 
 
-def mark_random(preferred_pos, grid, subgrid):
+def mark_random(preferred_pos, subgrid, morpion):
     debug("caca")
     something_marked = False
     checked = set()
@@ -25,7 +25,7 @@ def mark_random(preferred_pos, grid, subgrid):
 
         if test_pos(subgrid, pos):
             nice_pos.add(pos)
-            if elie.check_next_win(grid, pos):
+            if elie.check_next_win(morpion.grid, (morpion.last_x, morpion.last_y) + pos):
                 something_marked = True
                 return pos
 
@@ -38,9 +38,12 @@ def mark_random(preferred_pos, grid, subgrid):
         checked.add(pos)
         if test_pos(subgrid, pos):
             nice_pos.add(pos)
-            if elie.check_next_win(grid, pos):
+            if elie.check_next_win(morpion.grid, (morpion.last_x, morpion.last_y) + pos):
                 something_marked = True
                 return pos
+
+    if len(nice_pos) != 0:
+        return random.sample(nice_pos, 1)[0]
 
     debug("pos:"+str(pos))
     debug("something_marked:"+str(something_marked))
@@ -49,7 +52,7 @@ def mark_random(preferred_pos, grid, subgrid):
     return False
 
 
-def play_next_subgrid(grid, subgrid, my_marked_pos, his_marked_pos):
+def play_next_subgrid(morpion, subgrid, my_marked_pos, his_marked_pos):
     debug("ok-1")
     winning_pos = elie.try_win(subgrid)
     if winning_pos is not None:
@@ -78,7 +81,7 @@ def play_next_subgrid(grid, subgrid, my_marked_pos, his_marked_pos):
     if len(my_marked_interesting_pos) == 0:
         playable_pos = interesting_pos.difference(set([(1, 1)]))
         debug("ok1")
-        tried_random = mark_random(playable_pos, grid, subgrid)
+        tried_random = mark_random(playable_pos, subgrid, morpion)
         if tried_random is False:
             return False
         else:
@@ -88,11 +91,11 @@ def play_next_subgrid(grid, subgrid, my_marked_pos, his_marked_pos):
         # It should be a corner, then, try to mark the opposite corner
         pos = next(iter(my_marked_interesting_pos))
         debug("ok2")
-        if(test_pos(subgrid, (2 - pos[0], 2 - pos[1])) is False and
-           elie.check_next_win(grid, (2 - pos[0], 2 - pos[1]))):
+        if(test_pos(subgrid, (2 - pos[0], 2 - pos[1])) is False or
+           not elie.check_next_win(morpion.grid, (morpion.last_x, morpion.last_y, 2 - pos[0], 2 - pos[1]))):
             playable_pos = remaining_interesting_pos.difference(set([(2 - pos[0], 2 - pos[1])]))
             debug("ok2bis")
-            tried_random = mark_random(playable_pos, grid, subgrid)
+            tried_random = mark_random(playable_pos, subgrid, morpion)
             if tried_random is False:
                 return False
             else:
@@ -111,14 +114,14 @@ def play_next_subgrid(grid, subgrid, my_marked_pos, his_marked_pos):
         # so keep playing interesting pos if possible.
         playable_pos = interesting_pos.difference(my_marked_interesting_pos)
         debug("ok3")
-        if(test_pos(subgrid, (1, 1)) is False and
-           elie.check_next_win(grid, (2 - pos[0], 2 - pos[1]))):
+        if(test_pos(subgrid, (1, 1)) is False or
+           not elie.check_next_win(morpion.grid, (morpion.last_x, morpion.last_y, 1, 1))):
             try:
                 playable_pos.remove((1, 1))
             except KeyError:
                 pass
             debug("ok3bis")
-            tried_random = mark_random(playable_pos, grid, subgrid)
+            tried_random = mark_random(playable_pos, subgrid, morpion)
             debug("tried random:"+str(tried_random))
             if tried_random is False:
                 return False
