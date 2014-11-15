@@ -48,7 +48,7 @@ class Morpion:
         while not pos:
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
             subgrid = self.grid[self.last_x][self.last_y]
-            pos = phyks.play_next_subgrid(subgrid, my, his)
+            pos = phyks.play_next_subgrid(grid, subgrid, my, his)
 
         new_x, new_y = pos
         cell = self.last_x, self.last_y, new_x, new_y
@@ -100,6 +100,21 @@ class Morpion:
         exit()
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Morpion2(Morpion):
     def available_positions(self):
         subgrid = self.grid[self.last_x][self.last_y]
@@ -125,9 +140,38 @@ class Morpion2(Morpion):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class ProtocolError(Exception):
     def __init__(self, msg):
         self.msg = msg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def run(MorpionClass):
     while True:
