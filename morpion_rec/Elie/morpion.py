@@ -104,7 +104,7 @@ class Morpion2(Morpion):
         return [(self.last_x, self.last_y, x, y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 0]
 
     def score(self):
-
+        return 0
 
     def play(self, time):
         if time < 0:
