@@ -22,7 +22,7 @@ class Morpion:
         my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
         his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
-        pos = phyks.play_next_subgrid(subgrid, my, his)
+        pos = phyks.play_next_subgrid(self.grid, subgrid, my, his)
         if not pos:
             for (x,y) in product(range(3), range(3)):
                 self.last_x, self.last_y = x, y
@@ -41,7 +41,7 @@ class Morpion:
                 if score is None or new_score > score:
                     score = new_score
                     best = self.last_x, self.last_y
-            pos = phyks.play_next_subgrid(subgrid, my, his)
+            pos = phyks.play_next_subgrid(self.grid, subgrid, my, his)
 
 
 
