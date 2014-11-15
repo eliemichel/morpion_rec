@@ -10,5 +10,6 @@
 
 *.o
 
+morpion_rec/*/player
 
 dummy_test
