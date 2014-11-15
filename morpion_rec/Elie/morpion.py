@@ -86,6 +86,8 @@ class Morpion:
         exit()
 
     def lose(self):
+        debug("Lost:")
+        print_grid(self.grid)
         print("Fair enough")
         exit()
 
