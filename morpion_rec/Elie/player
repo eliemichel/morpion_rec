@@ -1,0 +1,3 @@
+#!/bin/sh
+
+python /home/elie/src/CompetIA//morpion_rec/Elie/morpion.py
