@@ -70,15 +70,19 @@ class Morpion:
 
     def win(self):
         print("Fair enough")
+        exit()
 
     def lose(self):
         print("Fair enough")
+        exit()
 
     def tie(self):
         print("Fair enough")
+        exit()
 
     def cheater(self):
         print("Fair enough")
+        exit()
 
 
 class Morpion2(Morpion):
