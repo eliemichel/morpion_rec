@@ -20,11 +20,15 @@ class Morpion:
         new_x = 0
         new_y = 0
         def mark_pos(p):
+            global new_x
+            global new_y
             x,y = p
             if subgrid[x][y] != 0:
                 return False
             new_x = x
             new_y = y
+            debug("new_x:"+str(new_x))
+            debug("new_y:"+str(new_y))
             return True
 
         my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
@@ -32,6 +36,9 @@ class Morpion:
 
         phyks.play_next_subgrid(subgrid, my, his, mark_pos)
         cell = self.last_x, self.last_y, new_x, new_y
+        debug("get_by_tuple:"+str(get_by_tuple(self.grid, cell)))
+        debug("cell:"+str(cell))
+        debug("subgrid:"+str(subgrid[new_x][new_y]))
 
         debug("elie.check_next_win(self.grid, cell): " + str(elie.check_next_win(self.grid, cell)))
 
