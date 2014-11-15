@@ -34,7 +34,7 @@ class Morpion:
                     return self.last_x, self.last_y, pos2[0], pos2[1]
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
             subgrid = self.grid[self.last_x][self.last_y]
-            debug("while not pos")
+            pos = phyks.play_next_subgrid(subgrid, my, his)
 
         new_x, new_y = pos
         cell = self.last_x, self.last_y, new_x, new_y
@@ -69,15 +69,19 @@ class Morpion:
 
     def win(self):
         print("Fair enough")
+        exit()
 
     def lose(self):
         print("Fair enough")
+        exit()
 
     def tie(self):
         print("Fair enough")
+        exit()
 
     def cheater(self):
         print("Fair enough")
+        exit()
 
 
 class Morpion2(Morpion):
