@@ -29,7 +29,7 @@ def try_win(subgrid, player=1):
 
 	return None
 
-
+"""
 def win(subgrid, player=-1):
 	
 	s = 0
@@ -49,7 +49,7 @@ def win(subgrid, player=-1):
 		return i, 2-i
 
 	return None
-
+"""
 
 
 def check_next_win(grid, cell):
