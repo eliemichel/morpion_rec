@@ -7,7 +7,12 @@ class Escape(Exception):
     pass
 
 
-def mark_random(preferred_pos, test_pos):
+def test_pos(subgrid, pos):
+    x,y = pos
+    return subgrid[x][y] == 0
+
+
+def mark_random(preferred_pos, subgrid):
     debug("caca")
     something_marked = False
     checked = set()
@@ -17,7 +22,7 @@ def mark_random(preferred_pos, test_pos):
         checked.add(pos)
         preferred_pos.remove(pos)
 
-        if test_pos(pos):
+        if test_pos(subgrid, pos):
             something_marked = True
             return pos
 
@@ -28,7 +33,7 @@ def mark_random(preferred_pos, test_pos):
         if pos in checked:
             continue
         checked.add(pos)
-        if test_pos(pos):
+        if test_pos(subgrid, pos):
             something_marked = True
             return pos
 
@@ -38,11 +43,11 @@ def mark_random(preferred_pos, test_pos):
     return False
 
 
-def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos, test_pos):
+def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos):
     debug("ok-1")
     winning_pos = elie.try_win(subgrid)
     if winning_pos is not None:
-        if test_pos(winning_pos):
+        if test_pos(subgrid, winning_pos):
             return winning_pos
         else:
             raise ValueError
@@ -61,7 +66,7 @@ def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos, test_pos):
     if len(my_marked_interesting_pos) == 0:
         playable_pos = interesting_pos.difference(set([(1, 1)]))
         debug("ok1")
-        tried_random = mark_random(playable_pos, test_pos)
+        tried_random = mark_random(playable_pos, subgrid)
         if tried_random is False:
             return False
         else:
@@ -71,10 +76,10 @@ def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos, test_pos):
         # It should be a corner, then, try to mark the opposite corner
         pos = next(iter(my_marked_interesting_pos))
         debug("ok2")
-        if not test_pos((2 - pos[0], 2 - pos[1])):
+        if not test_pos(subgrid, (2 - pos[0], 2 - pos[1])):
             playable_pos = remaining_interesting_pos.difference(set([(2 - pos[0], 2 - pos[1])]))
             debug("ok2bis")
-            tried_random = mark_random(playable_pos, test_pos)
+            tried_random = mark_random(playable_pos, subgrid)
             if tried_random is False:
                 return False
             else:
@@ -93,17 +98,17 @@ def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos, test_pos):
         # so keep playing interesting pos if possible.
         playable_pos = interesting_pos.difference(my_marked_interesting_pos)
         debug("ok3")
-        if test_pos((1, 1)) is False:
+        if test_pos(subgrid, (1, 1)) is False:
             try:
                 playable_pos.remove((1, 1))
             except KeyError:
                 pass
             debug("ok3bis")
-            tried_random = mark_random(playable_pos, test_pos)
+            tried_random = mark_random(playable_pos, subgrid)
             debug("tried random:"+str(tried_random))
             if tried_random is False:
                 return False
             else:
                 return tried_random
-        debug("debug ok3:"+str(test_pos((1, 1))))
+        debug("debug ok3:"+str(test_pos(subgrid, (1, 1))))
         return (1, 1)

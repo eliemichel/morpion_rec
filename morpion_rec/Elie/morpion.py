@@ -18,19 +18,18 @@ class Morpion:
         @return (x1, y1, x2, y2)"""
         print_grid(self.grid)
         subgrid = self.grid[self.last_x][self.last_y]
-        def test_pos(p):
-            x,y = p
-            return subgrid[x][y] == 0
 
         my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
         his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
-        pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
+        pos = phyks.play_next_subgrid(subgrid, my, his)
         while not pos:
+            debug("last_x:"+str(self.last_x))
+            debug("last_y:"+str(self.last_y))
             for (x,y) in product(range(3), range(3)):
                 self.last_x, self.last_y = x, y
                 subgrid = self.grid[x][y]
-                pos2 = try_win(subgrid)
+                pos2 = elie.try_win(subgrid)
                 if pos2 is not None:
                     return self.last_x, self.last_y, pos2[0], pos2[1]
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
