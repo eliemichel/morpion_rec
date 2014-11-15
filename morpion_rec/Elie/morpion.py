@@ -15,11 +15,12 @@ class Morpion:
         """Determine where to play
         @param time: Remaining global play time
         @return (x1, y1, x2, y2)"""
+        print_grid(self.grid)
         subgrid = self.grid[self.last_x][self.last_y]
         new_x = 0
         new_y = 0
         def mark_pos(p):
-            x, y = p
+            x,y = p
             if subgrid[x][y] != 0:
                 return False
             new_x = x
@@ -32,10 +33,10 @@ class Morpion:
         phyks.play_next_subgrid(subgrid, my, his, mark_pos)
         cell = self.last_x, self.last_y, new_x, new_y
 
-        debug(elie.check_next_win(self.grid, cell))
+        debug("elie.check_next_win(self.grid, cell): " + str(elie.check_next_win(self.grid, cell)))
 
         return cell
-            
+
 
 
     def tic(self, cell):
