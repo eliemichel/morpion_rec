@@ -1,19 +1,8 @@
-import sys
 import phyks
+import elie
 from itertools import product
+from utils import *
 
-debug = lambda msg: sys.stderr.write(str(msg) + '\n')
-
-def get_by_tuple(l, t):
-    for i in t:
-        l = l[i]
-    return l
-
-def set_by_tuple(l, t, v):
-    debug(l)
-    for i in t[:-1]:
-        l = l[i]
-    l[t[-1]] = v
 
 class Morpion:
     """IA for recursive morpion"""
@@ -39,9 +28,12 @@ class Morpion:
         my = [x,y for x,y in product([range(3)]*2) if subgrid[x][y] == 1]
         his = [x,y for x,y in product([range(3)]*2) if subgrid[x][y] == -1]
 
-        phyks.play_next_subgrid(my, his, mark_pos)
+        phyks.play_next_subgrid(subgrid, my, his, mark_pos)
+        cell = self.last_x, self.last_y, new_x, new_y
 
-        return self.last_x, self.last_y, new_x, new_y
+        debug(elie.check_next_win(self.grid, cell))
+
+        return cell
             
 
 
