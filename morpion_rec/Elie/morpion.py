@@ -26,8 +26,8 @@ class Morpion:
             new_y = y
             return True
 
-        my = [(x,y) for (x,y) in product([range(3)]*2) if subgrid[x][y] == 1]
-        his = [(x,y) for (x,y) in product([range(3)]*2) if subgrid[x][y] == -1]
+        my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
+        his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
         phyks.play_next_subgrid(subgrid, my, his, mark_pos)
         cell = self.last_x, self.last_y, new_x, new_y
