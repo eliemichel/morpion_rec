@@ -18,14 +18,11 @@ class Morpion:
         @return (x1, y1, x2, y2)"""
         print_grid(self.grid)
         subgrid = self.grid[self.last_x][self.last_y]
-        def test_pos(p):
-            x,y = p
-            return subgrid[x][y] == 0
-
+        
         my = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 1]
         his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
-        pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
+        pos = phyks.play_next_subgrid(subgrid, my, his)
         while not pos:
             for (x,y) in product(range(3), range(3)):
                 self.last_x, self.last_y = x, y
@@ -35,7 +32,7 @@ class Morpion:
                     return self.last_x, self.last_y, pos2[0], pos2[1]
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
             subgrid = self.grid[self.last_x][self.last_y]
-            debug("while not pos")
+            pos = phyks.play_next_subgrid(subgrid, my, his)
 
         new_x, new_y = pos
         cell = self.last_x, self.last_y, new_x, new_y
