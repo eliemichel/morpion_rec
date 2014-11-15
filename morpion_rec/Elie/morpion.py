@@ -1,4 +1,5 @@
 import sys
+import phyks
 from itertools import product
 
 debug = lambda msg: sys.stderr.write(str(msg) + '\n')
@@ -16,29 +17,33 @@ def set_by_tuple(l, t, v):
 
 class Morpion:
     """IA for recursive morpion"""
-    def __init__(self, n=2):
-        """@param n: Number of recursive iterations"""
-        self.iter = n
-        self.grid = None
+    def __init__(self):
         self.last_x = 1
         self.last_y = 1
-        for k in range(self.iter*2):
-            self.grid = [
-                0 if self.grid is None else self.grid.copy(),
-                0 if self.grid is None else self.grid.copy(),
-                0 if self.grid is None else self.grid.copy()
-            ]
         self.grid = [[[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]], [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]], [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]]
 
     def play(self, time):
         """Determine where to play
         @param time: Remaining global play time
         @return (x1, y1, x2, y2)"""
-        #subgrid = self.grid[self.last_x][self.last_y]
-        coords = [[self.last_x], [self.last_y], range(3), range(3)]
-        for cell in product(*coords):
-            if get_by_tuple(self.grid, cell) == 0:
-                return cell
+        subgrid = self.grid[self.last_x][self.last_y]
+        new_x = 0
+        new_y = 0
+        def mark_pos((x, y)):
+            if subgrid[x][y] != 0:
+                return False
+            new_x = x
+            new_y = y
+            return True
+
+        my = [x,y for x,y in product([range(3)]*2) if subgrid[x][y] == 1]
+        his = [x,y for x,y in product([range(3)]*2) if subgrid[x][y] == -1]
+
+        phyks.play_next_subgrid(my, his, mark_pos)
+
+        return self.last_x, self.last_y, new_x, new_y
+            
+
 
     def tic(self, cell):
         """Play for local player
@@ -83,7 +88,7 @@ def run(MorpionClass):
         l = input()
 
         if l == "Hello morpion_rec":
-            game = MorpionClass(2)
+            game = MorpionClass()
             print("Hello morpion_rec")
 
         if l[:9] == "Your turn":
