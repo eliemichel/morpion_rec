@@ -30,6 +30,26 @@ def try_win(subgrid, player=1):
 	return None
 
 
+def win(subgrid, player=-1):
+	
+	s = 0
+	for j in range(3):
+		if [subgrid[j][i] for i in range(3)].count(player) == 3:
+			return True
+
+		if [subgrid[i][j] for i in range(3)].count(player) == 3:
+			s += 1
+
+	i = [subgrid[i][i] for i in range(3)].count(player) == 3:
+	if i is not None:
+		return i, i
+
+	i = try_win_line([subgrid[i][2-i] for i in range(3)], player)
+	if i is not None:
+		return i, 2-i
+
+	return None
+
 
 
 def check_next_win(grid, cell):

@@ -23,15 +23,29 @@ class Morpion:
         his = [(x,y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == -1]
 
         pos = phyks.play_next_subgrid(subgrid, my, his)
-        while not pos:
-            debug("last_x:"+str(self.last_x))
-            debug("last_y:"+str(self.last_y))
+        if not pos:
             for (x,y) in product(range(3), range(3)):
                 self.last_x, self.last_y = x, y
                 subgrid = self.grid[x][y]
                 pos2 = elie.try_win(subgrid)
                 if pos2 is not None:
                     return self.last_x, self.last_y, pos2[0], pos2[1]
+
+        if not pos:
+            score = None
+            best = randint(0, 2), randint(0, 2)
+            for (x,y) in product(range(3), range(3)):
+                self.last_x, self.last_y = x, y
+                subgrid = self.grid[x][y]
+                new_score = sum([sum(subgrid[i]) for i in range(3)])
+                if score is None or new_score > score:
+                    score = new_score
+                    best = self.last_x, self.last_y
+            pos = phyks.play_next_subgrid(subgrid, my, his)
+
+
+
+        while not pos:
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
             subgrid = self.grid[self.last_x][self.last_y]
             pos = phyks.play_next_subgrid(subgrid, my, his)
@@ -89,19 +103,22 @@ class Morpion2(Morpion):
         subgrid = self.grid[self.last_x][self.last_y]
         return [(self.last_x, self.last_y, x, y) for (x,y) in product(range(3), range(3)) if subgrid[x][y] == 0]
 
+    def score(self):
+
+
     def play(self, time):
         if time < 0:
             return None
-        max_cost = None
+        max_score = None
         for p in self.available_positions():
             m = self.copy()
             if elie.check_next_win(m.grid, p):
                 m.tic(p)
                 if m.play(time - 1) is not None:
-                    cost = m.cost()
-                    if max_cost is None or cost > max_cost:
+                    score = m.score()
+                    if max_score is None or score > max_score:
                         best = p
-                        max_cost = cost
+                        max_score = score
         return best
 
 
