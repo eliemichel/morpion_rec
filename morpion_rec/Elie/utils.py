@@ -19,14 +19,11 @@ def print_grid(grid):
 		for j in range(3):
 			s = ''
 			for k in range(3):
-				s += '|'.join([['x',' ','o'][grid[k][l][i][j]+1] for i in range(3)])
+				s += ''.join([['×','⋅','o'][grid[k][l][i][j]+1] for i in range(3)])
 				if k != 2:
-					s += ' || '
+					s += '|'
 			debug(s)
-			if j != 2:
-				debug('----- || ----- || -----')
 		if l != 2:
-			debug('-----------------------')
-			debug('-----------------------')
+			debug('-----------')
 
 
