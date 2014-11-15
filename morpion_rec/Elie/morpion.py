@@ -35,7 +35,7 @@ class Morpion:
                     return self.last_x, self.last_y, pos2[0], pos2[1]
             self.last_x, self.last_y = randint(0, 2), randint(0, 2)
             subgrid = self.grid[self.last_x][self.last_y]
-            pos = phyks.play_next_subgrid(subgrid, my, his, test_pos)
+            debug("while not pos")
 
         new_x, new_y = pos
         cell = self.last_x, self.last_y, new_x, new_y
@@ -123,6 +123,7 @@ def run(MorpionClass):
 
             cell = game.play(time)
             if not game.tic(cell):
+                debug("cell_before_raise:"+str(cell))
                 raise ProtocolError('Attempt to play in an occupied cell in %s' % (l,))
             a,b,c,d = cell
             print('Play %d %d %d %d' % (a+1,b+1,c+1,d+1))

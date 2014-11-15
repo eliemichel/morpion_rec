@@ -94,11 +94,16 @@ def play_next_subgrid(subgrid, my_marked_pos, his_marked_pos, test_pos):
         playable_pos = interesting_pos.difference(my_marked_interesting_pos)
         debug("ok3")
         if test_pos((1, 1)) is False:
-            playable_pos.remove((1, 1))
+            try:
+                playable_pos.remove((1, 1))
+            except KeyError:
+                pass
             debug("ok3bis")
             tried_random = mark_random(playable_pos, test_pos)
+            debug("tried random:"+str(tried_random))
             if tried_random is False:
                 return False
             else:
                 return tried_random
+        debug("debug ok3:"+str(test_pos((1, 1))))
         return (1, 1)
